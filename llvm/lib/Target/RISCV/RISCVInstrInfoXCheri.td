@@ -229,6 +229,19 @@ multiclass CAMO_C_rr_aq_rl<string clenstr, bits<5> funct5, bits<3> funct3,
 }
 
 //===----------------------------------------------------------------------===//
+// Encryption Instructions
+//===----------------------------------------------------------------------===//
+
+let Predicates = [HasCheri] in {
+def CSealEncrypt : Cheri_rr<0x3, "csealencrypt", GPCR, GPCR, GPCR>;
+
+let isCall = 1, hasSideEffects = 0, mayLoad = 0, mayStore = 0 in
+def CInvokeEncrypt : RVInstCheriTwoSrc<0x7e, 0x2, 0, OPC_CHERI, (outs),
+                                (ins GPCR:$rs1, GPCR:$rs2),
+                                "cinvokeencrypt", "$rs1, $rs2">;
+}
+
+//===----------------------------------------------------------------------===//
 // Capability-Inspection Instructions
 //===----------------------------------------------------------------------===//
 
